@@ -1,0 +1,273 @@
+---
+title: "Trabalho de Econometria Espacial"
+author: "Bruno Tebaldi"
+date: "April 11, 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Resumo
+## Introducao e revisao bibliografica
+
+Econometric studies of unemployment with a regional dimension often consist of papers using individual level data to explain how regional factors affect employment outcomes alongside individual characteristics.
+
+Firstly, focusing on the Brazilian labor market, Oliveira and Carneiro [2001] analyzed the fluctuations in the employment level of several Brazilian states compared to national employment. The purpose of their study was to verify whether it is possible to establish a long-term relationship between state employment and nationwide employment. To achieve this the authors applied a cointegration analysis, a methodology proposed by Engle and Granger [1987], as well as the model of unrestricted error correction as proposed by Pesaran et al. [1996]. The results obtained from an Vector Error Correction model were consistent with those obtained with Engle and Granger method (Engle and Granger [1987]). The results lead to the conclusion that employment fluctuations in most states shares a common trend with national employment level.
+
+The hypothesis that the formal labor market presents a different dynamics in Brazilian metropolitan and nonmetropolitan areas was tested by Kretzmann and da Cunha [2009]. The goal of their study was to analyze the fluctuations in the labor market of metropolitan and non-metropolitan Brazilian areas. They used employment and unemployment data from the Ministry of Labor and Employment through the General Records of Employed and Unemployed Persons - CAGED - using monthly data from 1996 through 2007. Kretzmann and da Cunha [2009] used cointegration analysis through the traditional method proposed by Engle-Granger, as well as the method proposed by Pesaran et al. [1996]. The two methods produced the similar results, suggesting that the metropolitan and non-metropolitan areas are not co-integrated.
+
+None of these paper deals with the curse of dimensionality. The authors opt to with pairs of series. The evidence that states and national share a common trend highlight a possible channel linking macro and regional dynamics.
+
+Althought this body of past research can offer a number of useful insights, however, 
+none of these papers establishes the presence of spatial dependence nor it aims to identify the spatial interdependence between the regions.
+
+Addressing these gaps is important as unemployment has significant consequences at both the micro and macro levels. For individuals, being unemployed can result in lowered income and possibly self-esteem, while at the macro level, elevated unemployment levels entail a loss of economic output and raised welfare spending (Brown and Sessions, 1997). This problem of a lack of understanding eventual spatial dependencies affecting unemployment in Brazil presents a clear motivation for carrying out this study.
+
+<!-- This is because demonstrating the geographic scale over which spillovers are apparent might strengthen the case for public authorities in proximate regions to collaborate on unemployment reduction schemes, and identifying the nature of the spillovers might point towards policy areas which should be focussed on. In order to maximise the contribution of this study toward solving the problem, it is important to set out clear research questions which can help steer the research design. I set out these research questions in the next section. -->
+
+## Research Questions
+
+Como mencionado anteriormente, pretendemos modelar o fluxo de emprego liquido levando em conta as dependências espaciais. Além disso, como objetivo secundário, pretendemos comparar dois duas métricas utilizadas para a construção da matrix de pessos utilizados na modelagem espacial.
+
+## Model ???
+
+A utilização dos modelos espaciais é indicada quando existe a interação entre regiões com uma uma persistência no espaço das caracteristicas observadas. Neste cenário, a utilização de econometria espcacial leva em conta não somente a influencia das variaveis independentes, mas também os efeitos das vizinhanças. Esse efeito de regional das vizinhancas é capturado por meio de uma matriz de pesos o qual é responsavel por capturar o efeito de defazagem espacial. 
+Primeiramente vamos analisar o fluxo de emprego liquido, logo teremos que para cada região $s$, a variável $y(s)$ será definida pelo fluxo de emprego líquido, sendo assim $y(s)$ será aquantidade de pessoas admitidas no mercado de trabalho menos a quantidade de pessoas desligadas do mercado de trabalho.
+
+Referente a matriz de pessos é na realidade uma métrica da distancia entre as regiões, aonde vale resaltar que essa métrica não precisa estar associada a espaço físico, podendo ser uma métrica econômica, política ou social, etc.
+
+Sendo assim vamos utilizar dois modelos esaciais, o modelo autoregressivo espacial (SAR) e o modelo autoregressivos espaciais Condicional (CAR)
+
+#### Modelo SAR
+Designaremos cada localidade por $S_i$, e um conjunto de vizinhos $N(S_i)$. Sendo assim, definimos o modelo Autoregressivo espacial (SAR) como
+\begin{equation}
+  y(s) = \delta + X(s)\beta + \phi \frac{1}{\left| N(s) \right|} \sum_{s' \in N(s)} y(s') + \mathcal{N}(0,\sigma^2)
+\end{equation}
+
+Aonde $X(s)$ é um vetor de covariadas, o parâmetro autoregressivo espacial é ponderado por uma média dos valores dos vizinhos (tal como especificada pela matriz de vizinhança). O modelo pode ser reescrito como:
+
+\begin{equation}
+  y(s) = \delta + X(s)\beta + \phi \sum_{s' \in N(s)} \frac{W_{s, s'}}{W_s}  y(s') + \epsilon
+\end{equation}
+
+aonde $\epsilon \sim \mathcal{N}(0,\sigma^2 I)$
+
+#### Modelo CAR
+
+Seguindo a mesma terminologia, o modelo autoregressivo espacial da forma condicional pode ser escrito como:
+\[y(s)|y_{-s} \sim \mathcal{N}\left(\sum_{s'} \frac{W_{s, s'}}{W_s} y(s'), \sigma^2 \right)\]
+
+Portanto, a distribuição dos atributos em um modelo CAR é $ y \sim \mathcal{N}\left(0, \sigma^2\left( I - \phi W \right)^{-1}\right)$
+
+## Matrix de peso Modelo
+o critério de escolha de vizinhanças possui um impacto fundamental nos resultados das estatísticas descritivas.
+
+A especificação da matrix de pessos, $W$, é tipicamente baseada em alguma medida de distância entre regiões. No nosso estudo vamos utilizar dois tipos de métricas. A primeira métrica é a usualmente usada na literatura, tambem conhecido como queen. A segunda metrica é baseado no número de conexoes fisicas (ruas, estradas, vias aéreas, vias fluviais, etc) entre regioes.
+
+
+### Matrix Queen
+
+As linhas e colunas dessa matriz, frequentemente denotadas por $W = (w_{ij})$, correspondem às observações de corte transversal (por exemplo, indivíduos, regiões ou países), e o elemento genérico, $w_{ij}$, pode ser interpretado como a força da potencial interação entre as unidades $i$ e $j$.
+
+
+Essa matriz de pesso e baseada na posição geograffica entre as regioes. Ela é uma matriz de contiguidade binária, tendo seu elementos $(i, j)$ igual a "um" ou "zero". Se duas regiões são vizinhas, o valor será igual a "um" caso contrário será atribuído o valor igual "zero".
+
+Desta forma teremos que a matriz de pesos espaciais pode ser definida como : 
+
+\[w_{ij} = \begin{cases} 1 & \text{se } i \text{ e } j \text{ são conectadas} \\ 0 & \text{caso contrário} \end{cases}\]
+
+### Matrix de Conexoes
+
+A matriz de pesos deve ser definida de modo que $W$ capture a persistência das variáveis em outras regiões. Assim, para determinar a matriz de peso, é necessário determinar a importância de cada região em relação a todas as outras regiões.
+
+Focando no mercado de trabalho, determinar a importância de uma região em relacao a outra, é determinar a importância de um mercado de trabalho em relação a outro mercado de trabalho. Cada região tem seu próprio mercado de trabalho com empresas e trabalhadores, e como as empresas não podem mudar de mercado, são os trabalhadores que mudam livremente de mercado. Em outras palavras, um trabalhador pode procurar emprego em outras regiões, mas uma empresa deve atrair trabalhadores de outras regiões para seu próprio mercado. Conseqüentemente, para um trabalhador viajar para outra região, deve haver uma conexão entre essas regiões.
+
+A matriz de peso, pode então, ser determinada pelo número de conexões entre as regiões dividido pelo seu número total de conexões. Portanto, para cada regiao $s$ o vetor de peso $W_s$ associado a essa regiao é determinado como:
+
+\[W_i = \frac{\left[C_{s, 1}, \dots C_{s, n}\right]}{\sum_{s'} C_{s, s'}}a \]
+
+aonde $C_{i, j}$ é o número de conexoes entre a regiao $i$ e regiao $j$, e $n$ é quantidade total de regiões.
+
+
+## Variaveis de controle
+
+Diversos fatores podem influenciar o fluxo de empregos de uma região. Por exemplo, é esperado que uma região com uma maior concentração de industrias tenha um maior nivel de emprego e consequentemente um maior fluxo no emprego. Apresentamos aqui alguns dos fatores que consideramos importantes.
+
+### Demografia
+A estrutura etária pode influenciar a taxa de desemprego de uma área através de seu impacto no comportamento de busca, já que os jovens trabalhadores têm maior probabilidade de mudar de emprego em busca de um emprego melhor, enquanto trabalhadores mais velhos já tiveram a chance de passar por esse processo e favorecem empregos mais estaveis (Brown & Sessions, 1997). Isto sugere que áreas com muitos trabalhadores jovens deverão ter um fluxo de emprego mais elevado.
+
+### 2.6.5. Mix de firmas
+O mix de indústria de uma região pode influenciar o comportamento de busca e, portanto, o desemprego. Além do canal de de oferta de vagas, o qual influencia diretamente a taxa de emprego, existe outro canal de impacto relacionado as firmas, este canal vem de mudanças no mix das firmas que podem aumentar o desemprego. Isso pode ocorrer devido à mudanças na estrutura industrial o qual podem significar que as habilidades dos candidatos ao emprego não são adequadas às vagas oferecidas, de modo que ocorre um aumento na taxa de desemprego.
+
+### Criminalidade
+A literatura econômica sugere que a atividade criminosa é motivada principalmente pelos benefícios relativos a atividades ilegais. Primeiro apontado por Becker (1968), criminosos em potencial pesam os custos e os benefícios de cometer crimes. Indivíduos podem gerar renda através de atividades criminosas e mercados de trabalho. Consequentemente, a renda obtida em uma dessas alternativas é incluída no custo de participação na outra (Block e Heineke, 1975, Ehrlich, 1973, Machin e Meghir, 2004, Mocan et al., 2005). Indivíduos com oportunidades atuais e futuras potencialmente melhores no mercado de trabalho legal são menos propensos a cometer crimes.
+
+Um fator determinante dessas oportunidades no mercado de trabalho é a taxa de desemprego, que flutua ao longo do ciclo econômico. Durante uma recessão, quando a taxa de desemprego aumenta, as chances de emprego no mercado de trabalho legal diminuem, neste cenário, enquanto as perspectivas de emprego dos indivíduos forem influenciadas pelas condições legais do mercado de trabalho, as mudanças na taxa de desemprego terão impacto na taxa de criminalidade, que é uma agregação das atividades criminosas dos indivíduos. Em tempos de desemprego elevado, o benefício relativo de trabalhar no mercado de trabalho legal para um indivíduo diminui na margem, aumentando a taxa de criminalidade no país.
+
+### Capital humano
+Espera-se que os indivíduos com níveis mais altos de capital humano sejam mais consistentemente demandados pelos empregadores bem como é esperado que indivíduos com níveis mais altos de capital humano realizem pesquisas de emprego mais eficientes (Elhorst, 2003). Isso significa que áreas com uma alta proporção de indivíduos com níveis mais altos de capital humano devem ter taxas de desemprego mais baixas.
+
+
+### Moradia 
+O status de moradia pode afetar o comportamento de busca e, portanto, o desemprego de várias maneiras, por exemplo, os residentes em moradias públicas podem relutar em mudar de região em busca de emprego. Isso pode ser porque receber um lugar em moradias públicas é efetivamente um subsídio (Brown and Sessions, 1997) e a perspectiva de perder este subsídio, mudando para um novo emprego, pode tornar as buscas de residentes de moradias de moradia mais restritas. O mesmo também pode ser verdade para os ocupantes-proprietários, dados os custos de transação associados à compra da casa. 
+
+### Beneficios sociais
+
+O valor real dos benefícios de desemprego pode afetar as taxas de emprego e desemprego, aumentando o salário de reserva dos candidatos à emprego, reduzindo a atratividade de conseguir um novo emprego (Elhorst, 2003). Mesmo que tais benefícios sejam estabelecidos nacionalmente, se isso for feito em termos nominais, eles podem ter um impacto em nível regional se os diferentes custos de vida significarem que seu valor real varia.  Little (2009)
+
+
+
+## Descricao da base de dados
+
+Este capítulo apresentará a base de dados utilizada.
+
+O objetivo deste trabalho é analisar o fluxo de emprego líquido no estado de São Paulo, levando em consideração os efeitos espaciais. Para isso serão utilizado duas métricas de distancia, e será feito o controle por diversas covariadas.
+
+O estado de São Paulo é formado por 644 municípios (município de Ilhabela foi desconsiderado da amostra devido ser uma região sem vizinhos). A variável dependente é o fluxo de emprego líquido, construído a partir do fluxo formal de admisão e desligamentos no mercado de trabalho, com dados obtidos do Cadastro Geral de Empregados e Desempregados (CAGED).
+
+As demais variáveis explicativas utilizadas no modelo foram obtidos no site da Fundação SEADE e estão descritas conforme a seguir: 
+```{r echo=FALSE, results='asis', message=FALSE}
+library(knitr)
+library(readxl)
+DescicaoDados <- read_excel("./Dados.xlsx", sheet= "Dicionario de dados")
+kable(DescicaoDados, caption="Tabela de descricao dos dados")
+```
+
+## Resultados
+Esta seção apresentamos o procedimento para execução das regressoes bem como os resultados obtidos.
+
+Nosso primeiro passo é carregar todas as bibliotecas que iremos utilizar no estudo
+
+```{r message=FALSE}
+
+source("./InstallPackages.R")
+```
+
+Temos a base de dados agrupado separadamente do nosso *shapefile* então carregamos separadamente cada um dos arquivos.
+
+```{r}
+# carrega o shapefile 
+municipios <- sf::st_read("./ShapeFile/35MUE250GC_SIR.shp")
+
+# carrega o a base de dados
+dados <- read_excel("./Dados.xlsx")
+
+# Impressao do mapa utilizando o ggplot2
+ggplot(municipios) + geom_sf()
+```
+
+A base de dados é anexada ao shapefile por meio do pacote dplyr.
+
+```{r}
+# Verifica as diferencas entre as base de dados
+# Dados que estao na base de dados de criminalidade
+# menos os municipios do shapefile
+dplyr::setdiff(dados$CodIbge, municipios$CD_GEOCMU)
+
+# Dados que estao na base do shapelife
+# menos os municipios na base de dados de criminalidade
+dplyr::setdiff(municipios$CD_GEOCMU, dados$CodIbge)
+
+# Faz um merge dos dados em uma unica base de dados
+Dados.sp <- dplyr::full_join(municipios, dados,  by = c("CD_GEOCMU" = "CodIbge"))
+```
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+In many cases, it is common to assume that observations are independent
+and identically distributed, but this may not be the case when working
+with spatial data.
+
+Observations are not independent because there may exist
+some correlation between neighbouring areas. It may also be difficult to
+pick apart the impact of spatial autocorrelation and spatial differences in
+the distribution of the observation.
+
+Cressie (1993, pp. 402–448, 458–477, 548–
+568) provides a very wide discussion of these approaches, including reviews
+of the background for their development and comprehensive worked examples.
+Schabenberger and Gotway (2005, pp. 335–348) and Waller and Gotway
+(2004, pp. 362–380) concentrate on the spatial autoregressive models to be
+used in this section.
+
+
+From a statistical point of view, it is possible to account for correlated
+observations by considering a structure of the following kind in the model.
+If the vector of response variables is multivariate normal, we can express the
+model as follows:
+
+\begin{equation}
+Y = \mu +e
+\end{equation}
+
+where $\mu$ is the vector of area means, which can be modelled in different ways
+and $e$ is the vector of random errors, which we assume is normally distributed
+with zero mean and generic variance $V$.
+
+The mean is often supposed to depend
+on a linear term on some covariates X, so that we will substitute the mean
+by $X^T\beta$ in the model. On the other hand, correlation between areas is taken
+into account by considering a specific form of the variance matrix V .
+
+```{r libraryLoad, message=FALSE}
+source("./InstallPackages.R")
+
+```
+
+```{r cars}
+
+# carrega shapefile
+municipios <- sf::st_read("./ShapeFile/35MUE250GC_SIR.shp")
+
+
+# Carrega dados de criminalidade
+dados.crim.2010 <- read_excel("./dados_crim_sp_2010.xlsx")
+
+```
+
+```{r}
+
+ggplot(municipios) + geom_sf()
+```
+
+```{r}
+dplyr::setdiff(dados.crim.2010$CodIBGE, municipios$CD_GEOCMU)
+
+# Dados que estao na base do shapelife
+# menos os municipios na base de dados de criminalidade
+dplyr::setdiff(municipios$CD_GEOCMU, dados.crim.2010$CodIBGE)
+
+# Faz um merge dos dados em uma unica base de dados
+crim.sp <- dplyr::full_join(municipios, dados.crim.2010,  by = c("CD_GEOCMU" = "CodIBGE"))
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+International Review of Law and Economics
+Volume 32, Issue 1, March 2012, Pages 145-157

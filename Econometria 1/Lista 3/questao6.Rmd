@@ -1,0 +1,148 @@
+---
+title: "Econometria 1"
+author: "Bruno Tebaldi de Queiroz Barbosa"
+date: "April 8, 2018"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+código fonte: https://github.com/btebaldi/Econometria1/tree/master/Lista%203
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Lista 3 - Questão 6
+
+```{r cars, message=FALSE}
+# Limpa as variaveis anteriores
+rm(list = ls())
+
+# Carrega bibliotecas externas
+library(dplyr)
+```
+
+### Questão 6-a)
+Import temp CSHomePrice.mat.csv. This dataset stores information on house prices (Case-Shiller index) and pro-plaintiff rulings per circuit and period. Note that, except for the log CS index, all data is on a yearly frequency. Aggregate the dataset by year, taking the within-circuit-year average of the log price index.
+
+```{r, message=FALSE}
+
+# Importa base de dados
+CSHomePrice = read.csv("./temp_CSHomePrice.mat.csv", stringsAsFactors=FALSE)
+Probs = read.delim("./probs.txt",  stringsAsFactors=FALSE)
+
+# Aggregate the data by year and circuit
+CS_aggregated = dplyr::group_by(CSHomePrice, year, circuit) %>% dplyr::summarise_all(funs(mean))
+
+```
+
+### Questão 6-b)
+Run a regression of the log-price index on the total number of pro-plaintiff appellate taking decisions (*numpro_casecat_12*). What do you find? Does this coefficient have a causal interpretation? Why?
+
+
+O coeficiente encontrado (0.01703) não tem relacao causal, pois é esperado que o preço dos imoveis suba por causa da decisão judicial, porém pode haver incentivo dos Juízes em fazer uma decisão a favor do 'plaintiff' ou contra caso o juiz tenha intenção de realizar negócios no mercado imobiliario.
+
+```{r, message=FALSE}
+# Run a regression on logpriceindex ~ numpro_casecat_12
+mdl_1 = lm(logpriceindex ~ numpro_casecat_12, data = CS_aggregated)
+print(summary(mdl_1))
+```
+
+
+### Questão 6-c)
+
+Match dataset probs.txt to your data. This dataset stores the distribution of characteristics in each circuit pool from 1945 to 2007.
+
+```{r, message=FALSE}
+# Agrega as duas bases
+FullData = dplyr::inner_join(CS_aggregated, Probs, by= c("year" = "Syear", "circuit" = "Scircuit"))
+
+
+# apaga as bases pasadas para nao ocupar espaco
+rm(list = c("CS_aggregated", "CSHomePrice", "Probs"))
+
+```
+
+
+### Questão 6-d)
+We propose to run the following model:
+
+ln(Case Shiller)ct = b0 + b1 numpro_casecat_12ct + gama Wct + Ect
+
+Estimate the above model using the proposed instrument. Does the instrument satisfy the relevance assumption? Comment your estimates.
+
+Vamos definir as variáveis de controle a serem utilizadas
+
+```{r pressure, echo=TRUE, message=FALSE}
+varControls_01 = c("missing_cy_12", "numcasecat_12")
+varControls_99 = c("prob_1x_dem", "prob_2x_dem", "prob_3x_dem",
+                   "prob_1x_female", "prob_2x_female", "prob_3x_female",
+                   "prob_1x_nonwhite", "prob_2x_nonwhite", "prob_3x_nonwhite",
+                   "prob_1x_black", "prob_2x_black", "prob_3x_black",
+                   "prob_1x_jewish", "prob_2x_jewish", "prob_3x_jewish",
+                   "prob_1x_catholic", "prob_2x_catholic", "prob_3x_catholic",
+                   "prob_1x_noreligion", "prob_2x_noreligion", "prob_3x_noreligion",
+                   "prob_1x_instate_ba", "prob_2x_instate_ba", "prob_3x_instate_ba",
+                   "prob_1x_ba_public", "prob_2x_ba_public", "prob_3x_ba_public",
+                   "prob_1x_jd_public", "prob_2x_jd_public", "prob_3x_jd_public",
+                   "prob_1x_elev", "prob_2x_elev", "prob_3x_elev",
+                   "prob_1x_female_black", "prob_2x_female_black", "prob_3x_female_black",
+                   "prob_1x_female_noreligion", "prob_2x_female_noreligion", "prob_3x_female_noreligion", 
+                   "prob_1x_black_noreligion", "prob_2x_black_noreligion", "prob_3x_black_noreligion", 
+                   "prob_1x_female_jd_public", "prob_2x_female_jd_public", "prob_3x_female_jd_public",
+                   "prob_1x_black_jd_public", "prob_2x_black_jd_public", "prob_3x_black_jd_public",
+                   "prob_1x_noreligion_jd_public", "prob_2x_noreligion_jd_public", "prob_3x_noreligion_jd_public",
+                   "prob_1x_mainline", "prob_2x_mainline", "prob_3x_mainline",
+                   "prob_1x_evangelical", "prob_2x_evangelical", "prob_3x_evangelical",
+                   "prob_1x_protestant", "prob_2x_protestant", "prob_3x_protestant");
+
+```
+
+Para determinação do beta 1 vamos executar o método de 2SLS.
+
+Na execução do primeiro estágio vemos que a covariancia de **numpanels1x_dem** com **numpro_casecat_12** não é significante (p-values: 0.49271), sendo assim, o instrumento em questão (*numpanels1x_dem*) não satisfaz a condição de ser significantemente correlacionado com a variável (*numpro_casecat_12*), sendo considerado um instrumento fraco.
+
+#### Primeiro estagio
+
+```{r echo=TRUE, message=FALSE}
+f1 = formula(paste(c("numpro_casecat_12 ~ numpanels1x_dem", varControls_01, varControls_01, varControls_99), collapse = " + "))
+mdl_1stg = lm(formula = f1, data = FullData)
+print(summary(mdl_1stg))
+```
+
+
+#### Segundo estagio
+
+```{r echo=TRUE, message=FALSE}
+FullData[, "x_hat"] = mdl_1stg$fitted.values
+f2 = formula(paste(c("logpriceindex ~ x_hat", varControls_01, varControls_01, varControls_99), collapse = " + "))
+mdl_2stg = lm(formula = f2, data = FullData)
+print(summary(mdl_2stg))
+```
+
+### Questão 6-e)
+
+Do you think the coefficient found in (d) is a credible estimate of the causal effect we set ourselves to analyse? Why? If the answer is negative, could you use the data available and run an alternative specification that would produce more credible estimates? What did you find?
+
+Conforme comentado anteriormente, o instrumento utilizado é fraco e portanto devemos encontrar outro instrumento. Analizando a base de dados vemos que a variável **numpanels3x_ba_public** é um bom instrumento. Isso pode ser verificado através de sua significancia no primeiro estágio. ( Pr(>|t|) = 0.00429)
+
+#### Primeiro estagio
+```{r echo=TRUE, message=FALSE}
+
+fz_1stg = formula(paste(c("numpro_casecat_12 ~ numpanels3x_ba_public", varControls_01, varControls_01, varControls_99), collapse = " + "))
+
+mdl_z_1stg = lm(formula = fz_1stg, data = FullData)
+print(summary(mdl_z_1stg))
+```
+
+#### Segundo estagio
+
+```{r echo=TRUE, message=FALSE}
+FullData[, "z_hat"] = mdl_z_1stg$fitted.values
+
+fz_2stg = formula(paste(c("logpriceindex ~ z_hat", varControls_01, varControls_01, varControls_99), collapse = " + "))
+mdl_z_2stg = lm(formula = fz_2stg, data = FullData)
+print(summary(mdl_z_2stg))
+```
+

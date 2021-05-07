@@ -1,0 +1,126 @@
+---
+title: "Econometria 1"
+author: "Bruno Tebaldi de Queiroz Barbosa"
+date: "April 8, 2018"
+output: html_document
+---
+
+código fonte: https://github.com/btebaldi/Econometria1/tree/master/Lista%203
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Lista 3 - Questão 5
+
+```{r cars, message=FALSE}
+# Limpa as variaveis anteriores
+rm(list = ls())
+
+# carrega bibliotecas externas
+library(haven)
+library(sandwich)
+library(AER)
+```
+
+### Questão 5-a)
+Estimate the price elasticity of demand by using OLS to regress the log of the quantity of grain shipped on the log of the price and the full set of monthly binary indicators. What is the estimated value of the demand elasticity and its standard error?
+
+```{r }
+# Importa base de dados
+JEC = read_dta("./JEC.dta")
+
+# acrescento uma coluna de 1's no banco de dados (constante de regressao)
+JEC[, "1s"] = 1 
+
+# cria as variaveis Log(P) e Log(Q) 
+JEC[,"ln_P"] = log(JEC[,"price"])
+JEC[,"ln_Q"] = log(JEC[,"quantity"])
+```
+
+```{r}
+# Seleciona as variaveis de controle
+seascols = colnames(JEC)[grep("seas.",x = colnames(JEC), perl = T)]
+
+# estima o OLS pooled
+f1 = formula(paste("ln_Q ~ 1 + ln_P + ", paste(seascols, collapse = " + "), collapse = ""))
+mdl_1 = lm(f1, JEC)
+print(summary(mdl_1))
+
+robust_errors_mdl_1 = diag(sandwich::vcovHC(mdl_1, "HC1"))^0.5
+
+cat(sprintf("Erro robusto ln_P: %f\n", robust_errors_mdl_1["ln_P"]))
+```
+
+### Questão 5-b)
+
+Explain why the interaction of supply and demand could make the OLS estimator of the elasticity obtained in (a) biased.
+
+
+### Questão 5-c)
+
+Consider using the variable cartel as instrumental variable for ln(P). Use economic reasoning to argue whether cartel plausibly satisfies the two conditions for a valid instrument.
+
+```{r}
+# Utiliza cartel como variavel instrumental do preco
+
+# definicao do innstrumento
+Z_cartel_cols = c("1s", "cartel", seascols)
+Z_cartel = as.matrix(JEC[,Z_cartel_cols]) 
+
+# definicao da matrix X
+X_cols = c("1s", "ln_P", seascols)
+X = as.matrix(JEC[,X_cols]) 
+
+# definicao da matrix Y
+Y_cols = c("ln_Q")
+Y = as.matrix(JEC[,Y_cols]) 
+
+# Calculo do estimador
+b_iv = solve(t(Z_cartel)%*%X) %*% t(Z_cartel)%*%Y
+
+res = Y - X%*%b_iv
+sigma2 = t(res)%*%res/(length(res)-length(b_iv))
+var = as.numeric(sigma2) * solve(t(Z_cartel)%*%X) %*% t(Z_cartel) %*% Z_cartel %*% solve(t(X) %*% Z_cartel)
+t_stat = b_iv/diag(var)^0.5
+p_value = 2*pt(abs(t_stat), length(res)-length(b_iv), lower.tail = F, log.p = FALSE)
+
+result = data.frame(b_iv, "s.e." = diag(var)^0.5, "t-stat" = t_stat, "p.value" = p_value)
+colnames(result) = c("Coeff", "s.e.", "t-stat", "p-value")
+print (result)
+
+```
+
+
+### Questão 5-d)
+
+Test, at 5% significance level, the hypothesis that the demand for rail shipping of grain is inelastic.
+
+```{r}
+# teste se Beta = 0
+t = (b_iv["ln_P",])/(diag(var)["ln_P"])^0.5
+pvalue = 2*pnorm(abs(t), mean = 0, sd = 1, lower.tail = F, log.p = FALSE)
+
+cat(sprintf("\nTeste de beta = 0\nt-stat: %f\tp-value: %f\n", t, pvalue))
+
+```
+
+
+### Questão 5-e)
+
+Test, at 5% significance level, the hypothesis that the demand elasticity is equal to -􀀀1. What is the p-value of this test?
+
+```{r}
+# teste se Beta = -1
+t = (b_iv["ln_P",] + 1)/(diag(var)["ln_P"])^0.5
+pvalue = 2*pnorm(abs(t), mean = 0, sd = 1, lower.tail = F, log.p = FALSE)
+
+cat(sprintf("\nTeste de beta = -1\nt-stat: %f\tp-value: %f\n", t, pvalue))
+
+```
+
+
+### Questão 5-f)
+
+One of the reasons for price fluctuations was that the Great Lakes periodically froze, making shipping grain by boat impossible and temporarily increasing the demand for rail. Icei is a binary variable that is equal to 1 if the Great Lakes are not navigable because of ice. Consider using the variable Ice as instrumental variable for ln(P). Use economic reasoning to argue whether Ice plausibly satisfies the two conditions for a valid instrument to estimate demand elasticity for rail shipping of grain.

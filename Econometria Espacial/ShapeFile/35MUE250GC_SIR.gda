@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    <title>35MUE250GC_SIR</title>
+    <layers>
+        <layer>
+            <datasource>
+                <type>ESRI Shapefile</type>
+                <path>35MUE250GC_SIR.shp</path>
+            </datasource>
+            <layername>35MUE250GC_SIR</layername>
+            <title/>
+            <variable_order>
+                <time_ids>
+                    <id>time 0</id>
+                </time_ids>
+                <var>TESTE</var>
+                <var>POLY_ID</var>
+                <var>NM_MUNICIP</var>
+                <var>CD_GEOCMU</var>
+            </variable_order>
+            <custom_classifications>
+                <classification_definition>
+                    <title>Custom Breaks</title>
+                    <type>quantile</type>
+                    <num_cats>4</num_cats>
+                    <automatic_labels>true</automatic_labels>
+                    <assoc_db_fld_name>TESTE</assoc_db_fld_name>
+                    <uniform_dist_min>0</uniform_dist_min>
+                    <uniform_dist_max>1</uniform_dist_max>
+                    <breaks>
+                        <break>0.2492248062015504</break>
+                        <break>0.4992248062015504</break>
+                        <break>0.7492248062015504</break>
+                    </breaks>
+                    <names>
+                        <name>&lt; 0.249</name>
+                        <name>[0.249, 0.499)</name>
+                        <name>[0.499, 0.749]</name>
+                        <name>&gt; 0.749</name>
+                    </names>
+                    <colors/>
+                    <color_scheme>diverging</color_scheme>
+                </classification_definition>
+            </custom_classifications>
+            <weights_entries>
+                <weights>
+                    <title>35MUE250GC_SIR_2</title>
+                    <meta_info>
+                        <weights_type>custom</weights_type>
+                        <path>35MUE250GC_SIR_2.gal</path>
+                        <id_variable>CD_GEOCMU</id_variable>
+                        <symmetry>unknown</symmetry>
+                        <num_observations>645</num_observations>
+                        <min_neighbors>1</min_neighbors>
+                        <max_neighbors>23</max_neighbors>
+                        <mean_neighbors>5.683720930232558</mean_neighbors>
+                        <median_neighbors>5</median_neighbors>
+                        <non_zero_perc>0.8811970434469082</non_zero_perc>
+                    </meta_info>
+                </weights>
+                <weights>
+                    <title>poly</title>
+                    <default/>
+                    <meta_info>
+                        <weights_type>queen</weights_type>
+                        <order>1</order>
+                        <inc_lower_orders>false</inc_lower_orders>
+                        <path>poly.gal</path>
+                        <id_variable>POLY_ID</id_variable>
+                        <symmetry>symmetric</symmetry>
+                        <num_observations>645</num_observations>
+                        <min_neighbors>0</min_neighbors>
+                        <max_neighbors>23</max_neighbors>
+                        <mean_neighbors>5.68062015503876</mean_neighbors>
+                        <median_neighbors>5</median_neighbors>
+                        <non_zero_perc>0.8807163031067844</non_zero_perc>
+                    </meta_info>
+                </weights>
+            </weights_entries>
+            <default_vars>
+                <default_var>
+                    <name>POLY_ID</name>
+                    <time_id>time 0</time_id>
+                </default_var>
+                <default_var>
+                    <name/>
+                    <time_id>time 0</time_id>
+                </default_var>
+                <default_var>
+                    <name/>
+                    <time_id>time 0</time_id>
+                </default_var>
+                <default_var>
+                    <name/>
+                    <time_id>time 0</time_id>
+                </default_var>
+            </default_vars>
+        </layer>
+    </layers>
+</project>

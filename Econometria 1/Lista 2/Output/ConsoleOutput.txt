@@ -1,0 +1,307 @@
+
+Fixando seed em: 123456
+
+---- VERSAO ATUAL DO SOFTWARE ----
+               _                           
+platform       x86_64-w64-mingw32          
+arch           x86_64                      
+os             mingw32                     
+system         x86_64, mingw32             
+status                                     
+major          3                           
+minor          4.0                         
+year           2017                        
+month          04                          
+day            21                          
+svn rev        72570                       
+language       R                           
+version.string R version 3.4.0 (2017-04-21)
+nickname       You Stupid Darkness         
+
+----------------------------------
+
+
+Part A
+Total de amostras ensaiadas: 10000
+Numero de observacoes por amostra: 300
+
+
+Part B
+--------- Media dos valores ---------
+       b0               b1              var(b0)           var(b1)              SSX       
+ Min.   : 9.529   Min.   :-0.17071   Min.   :0.01073   Min.   :0.002212   Min.   :217.1  
+ 1st Qu.: 9.914   1st Qu.: 0.06024   1st Qu.:0.01549   1st Qu.:0.003096   1st Qu.:282.2  
+ Median :10.001   Median : 0.09941   Median :0.01671   Median :0.003347   Median :298.0  
+ Mean   :10.000   Mean   : 0.10022   Mean   :0.01683   Mean   :0.003370   Mean   :298.7  
+ 3rd Qu.:10.088   3rd Qu.: 0.13963   3rd Qu.:0.01807   3rd Qu.:0.003620   3rd Qu.:314.9  
+ Max.   :10.657   Max.   : 0.31430   Max.   :0.02577   Max.   :0.005129   Max.   :394.8  
+------------------------------------
+
+
+Part C
+Teste t para b1=0.1 
+	Total de rejeicoes: 494
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.049400
+
+
+Part D
+Teste t para b1=0.95 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+Teste t para b1=0.5 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+Teste t para b1=0 
+	Total de rejeicoes: 4089
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.408900
+
+
+Part E
+
+------------- 10 Observacoes -------------
+
+Sub Part (a)
+Total de amostras ensaiadas: 10000
+Numero de observacoes por amostra: 10
+
+Sub Part (b)
+--------- Media dos valores ---------
+       b0               b1             var(b0)            var(b1)              SSX         
+ Min.   : 5.202   Min.   :-1.7851   Min.   : 0.02932   Min.   :0.007738   Min.   : 0.7905  
+ 1st Qu.: 9.484   1st Qu.:-0.1350   1st Qu.: 0.32853   1st Qu.:0.067670   1st Qu.: 5.9823  
+ Median : 9.997   Median : 0.1010   Median : 0.52250   Median :0.107857   Median : 8.4076  
+ Mean   :10.004   Mean   : 0.1003   Mean   : 0.67483   Mean   :0.139721   Mean   : 9.0838  
+ 3rd Qu.:10.532   3rd Qu.: 0.3405   3rd Qu.: 0.83339   3rd Qu.:0.173706   3rd Qu.:11.4405  
+ Max.   :13.964   Max.   : 1.7085   Max.   :11.30729   Max.   :1.848021   Max.   :41.5448  
+------------------------------------
+
+Sub Part (c)
+Teste t para b1=0.1 e n_obs= 10 
+	Total de rejeicoes: 872
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.087200
+
+Sub Part (d)
+Teste t para b1=0.95 e n_obs= 10 
+	Total de rejeicoes: 6828
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.682800
+Teste t para b1=0.5 e n_obs= 10 
+	Total de rejeicoes: 2665
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.266500
+Teste t para b1=0 e n_obs= 10 
+	Total de rejeicoes: 995
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.099500
+
+---- Fim do ensaio de 10 Observacoes ----
+
+------------- 30 Observacoes -------------
+
+Sub Part (a)
+Total de amostras ensaiadas: 10000
+Numero de observacoes por amostra: 30
+
+Sub Part (b)
+--------- Media dos valores ---------
+       b0               b1              var(b0)           var(b1)              SSX       
+ Min.   : 8.245   Min.   :-0.84924   Min.   :0.03664   Min.   :0.007509   Min.   : 7.52  
+ 1st Qu.: 9.712   1st Qu.:-0.02426   1st Qu.:0.13267   1st Qu.:0.026711   1st Qu.:23.46  
+ Median : 9.994   Median : 0.10144   Median :0.17150   Median :0.034828   Median :28.26  
+ Mean   : 9.998   Mean   : 0.10051   Mean   :0.18383   Mean   :0.037265   Mean   :28.95  
+ 3rd Qu.:10.279   3rd Qu.: 0.22828   3rd Qu.:0.22164   3rd Qu.:0.045029   3rd Qu.:33.62  
+ Max.   :12.313   Max.   : 0.91333   Max.   :0.70654   Max.   :0.155216   Max.   :74.98  
+------------------------------------
+
+Sub Part (c)
+Teste t para b1=0.1 e n_obs= 30 
+	Total de rejeicoes: 622
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.062200
+
+Sub Part (d)
+Teste t para b1=0.95 e n_obs= 30 
+	Total de rejeicoes: 9858
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.985800
+Teste t para b1=0.5 e n_obs= 30 
+	Total de rejeicoes: 5652
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.565200
+Teste t para b1=0 e n_obs= 30 
+	Total de rejeicoes: 983
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.098300
+
+---- Fim do ensaio de 30 Observacoes ----
+
+------------- 1000 Observacoes -------------
+
+Sub Part (a)
+Total de amostras ensaiadas: 10000
+Numero de observacoes por amostra: 1000
+
+Sub Part (b)
+--------- Media dos valores ---------
+       b0               b1              var(b0)            var(b1)               SSX        
+ Min.   : 9.737   Min.   :-0.03750   Min.   :0.003925   Min.   :0.0007841   Min.   : 821.5  
+ 1st Qu.: 9.952   1st Qu.: 0.07861   1st Qu.:0.004795   1st Qu.:0.0009588   1st Qu.: 968.8  
+ Median :10.000   Median : 0.09988   Median :0.005003   Median :0.0010017   Median : 998.8  
+ Mean   :10.000   Mean   : 0.09987   Mean   :0.005014   Mean   :0.0010031   Mean   : 999.7  
+ 3rd Qu.:10.049   3rd Qu.: 0.12091   3rd Qu.:0.005223   3rd Qu.:0.0010449   3rd Qu.:1030.3  
+ Max.   :10.287   Max.   : 0.22038   Max.   :0.006384   Max.   :0.0012529   Max.   :1240.5  
+------------------------------------
+
+Sub Part (c)
+Teste t para b1=0.1 e n_obs= 1000 
+	Total de rejeicoes: 508
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.050800
+
+Sub Part (d)
+Teste t para b1=0.95 e n_obs= 1000 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+Teste t para b1=0.5 e n_obs= 1000 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+Teste t para b1=0 e n_obs= 1000 
+	Total de rejeicoes: 8833
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.883300
+
+---- Fim do ensaio de 1000 Observacoes ----
+
+------------- 3000 Observacoes -------------
+
+Sub Part (a)
+Total de amostras ensaiadas: 10000
+Numero de observacoes por amostra: 3000
+
+Sub Part (b)
+--------- Media dos valores ---------
+       b0               b1             var(b0)            var(b1)               SSX      
+ Min.   : 9.859   Min.   :0.03167   Min.   :0.001468   Min.   :0.0002945   Min.   :2723  
+ 1st Qu.: 9.973   1st Qu.:0.08748   1st Qu.:0.001627   1st Qu.:0.0003250   1st Qu.:2948  
+ Median :10.000   Median :0.09976   Median :0.001667   Median :0.0003335   Median :2999  
+ Mean   :10.000   Mean   :0.09987   Mean   :0.001668   Mean   :0.0003335   Mean   :2999  
+ 3rd Qu.:10.028   3rd Qu.:0.11204   3rd Qu.:0.001707   3rd Qu.:0.0003415   3rd Qu.:3051  
+ Max.   :10.152   Max.   :0.16559   Max.   :0.001908   Max.   :0.0003885   Max.   :3349  
+------------------------------------
+
+Sub Part (c)
+Teste t para b1=0.1 e n_obs= 3000 
+	Total de rejeicoes: 506
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.050600
+
+Sub Part (d)
+Teste t para b1=0.95 e n_obs= 3000 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+Teste t para b1=0.5 e n_obs= 3000 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+Teste t para b1=0 e n_obs= 3000 
+	Total de rejeicoes: 9998
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.999800
+
+---- Fim do ensaio de 3000 Observacoes ----
+
+
+Part F
+
+------------- 300 Observacoes -------------
+
+Sub Part (a)
+Total de amostras ensaiadas: 10000
+Numero de observacoes por amostra: 300
+
+Sub Part (b)
+--------- Media dos valores ---------
+       b0               b1             var(b0)          var(b1)             SSX       
+ Min.   : 6.084   Min.   :-2.4346   Min.   :0.3376   Min.   :0.07404   Min.   :213.1  
+ 1st Qu.: 9.409   1st Qu.:-0.2883   1st Qu.:0.6164   1st Qu.:0.12511   1st Qu.:282.5  
+ Median : 9.997   Median : 0.1032   Median :0.7042   Median :0.14081   Median :299.2  
+ Mean   : 9.997   Mean   : 0.1022   Mean   :0.7202   Mean   :0.14352   Mean   :299.4  
+ 3rd Qu.:10.576   3rd Qu.: 0.5012   3rd Qu.:0.8075   3rd Qu.:0.15919   3rd Qu.:315.6  
+ Max.   :13.958   Max.   : 2.5043   Max.   :1.4860   Max.   :0.28312   Max.   :407.3  
+------------------------------------
+
+Sub Part (c)
+Teste t para b1=0.1 e n_obs= 300 
+	Total de rejeicoes: 2101
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.210100
+
+Sub Part (d)
+Teste t para b1=0.95 e n_obs= 300 
+	Total de rejeicoes: 5782
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.578200
+Teste t para b1=0.5 e n_obs= 300 
+	Total de rejeicoes: 3086
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.308600
+Teste t para b1=0 e n_obs= 300 
+	Total de rejeicoes: 2162
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.216200
+
+---- Fim do ensaio de 300 Observacoes ----
+
+
+Part G
+
+------------- 300 Observacoes -------------
+
+Sub Part (a)
+Total de amostras ensaiadas: 10000
+Numero de observacoes por amostra: 300
+
+Sub Part (b)
+--------- Media dos valores ---------
+       b0              b1            var(b0)           var(b1)              SSX       
+ Min.   :7.493   Min.   :0.8797   Min.   :0.01026   Min.   :0.001934   Min.   :215.4  
+ 1st Qu.:7.909   1st Qu.:1.0611   1st Qu.:0.01544   1st Qu.:0.003091   1st Qu.:282.1  
+ Median :7.998   Median :1.1012   Median :0.01670   Median :0.003349   Median :298.6  
+ Mean   :7.998   Mean   :1.1009   Mean   :0.01682   Mean   :0.003368   Mean   :299.0  
+ 3rd Qu.:8.087   3rd Qu.:1.1398   3rd Qu.:0.01811   3rd Qu.:0.003623   3rd Qu.:314.9  
+ Max.   :8.515   Max.   :1.3292   Max.   :0.02527   Max.   :0.005082   Max.   :413.1  
+------------------------------------
+
+Sub Part (c)
+Teste t para b1=0.1 e n_obs= 300 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+
+Sub Part (d)
+Teste t para b1=0.95 e n_obs= 300 
+	Total de rejeicoes: 7378
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.737800
+Teste t para b1=0.5 e n_obs= 300 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+Teste t para b1=0 e n_obs= 300 
+	Total de rejeicoes: 10000
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 1.000000
+Teste t para b1=1.1 e n_obs= 300 
+	Total de rejeicoes: 507
+	Total de amostas: 10000
+	Porcentagem de rejeicoes: 0.050700
+
+---- Fim do ensaio de 300 Observacoes ----
